@@ -5,6 +5,8 @@ import helmet from 'helmet'
 const app = express()
 app.use(helmet())
 app.use(express.json())
-app.listen(3000)
 
-console.log('Running on port 3000')
+const port =parseInt(`${process.env.PORT}`)
+
+app.listen(port)
+console.log(`Running on port 3000 ${port}`)
