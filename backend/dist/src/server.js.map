@@ -1,0 +1,1 @@
+{"version":3,"file":"server.js","sourceRoot":"","sources":["../../accounts-service/src/server.ts"],"names":[],"mappings":";;;;;AAAA,gDAAwB;AAExB,MAAM,IAAI,GAAG,QAAQ,CAAC,GAAG,OAAO,CAAC,GAAG,CAAC,IAAI,EAAE,CAAC,CAAC;AAE7C,aAAG,CAAC,MAAM,CAAC,IAAI,EAAE,GAAG,EAAE;IACpB,OAAO,CAAC,GAAG,CAAC,wBAAwB,IAAI,EAAE,CAAC,CAAC;AAC9C,CAAC,CAAC,CAAC"}
