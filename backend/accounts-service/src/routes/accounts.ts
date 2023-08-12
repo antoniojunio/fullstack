@@ -1,12 +1,24 @@
-import { Router, Request, Response } from 'express'
-import accountsController from '../controllers/accounts'
+import { Router, Request, Response } from "express";
+import accountsController from "../controllers/accounts";
+import { accountSchema } from "../models/account";
 
-const router = Router()
+function validateAccount(req: Request, res: Response, next: any) {
+  const { error } = accountSchema.validate(req.body);
+  if (error == null) return next();
 
-router.get('/accounts/', accountsController.getAccounts)
+  const { details } = error;
+  const message = details.map((item) => item.message).join(",");
 
-router.get('/accounts/:id', accountsController.getAccount)
+  console.log(message);
+  res.status(422).end();
+}
 
-router.post('/accounts/', accountsController.addAccount)
+const router = Router();
 
-export default router 
+router.get("/accounts/", accountsController.getAccounts);
+
+router.get("/accounts/:id", accountsController.getAccount);
+
+router.post("/accounts/", validateAccount, accountsController.addAccount);
+
+export default router;
