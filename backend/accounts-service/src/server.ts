@@ -1,7 +1,16 @@
 import app from "./app";
+import database from "./db";
 
-const port = parseInt(`${process.env.PORT}`);
+(async () => {
+  try {
+    const port = parseInt(`${process.env.PORT}`);
 
-app.listen(port, () => {
-  console.log(`Running on port 3000 ${port}`);
-});
+    await database.sync();
+    console.log(`Running database ${process.env.DB_NAME}`);
+
+    await app.listen(port);
+    console.log(`Running on port 3000 ${port}`);
+  } catch (error) {
+    console.log(`${error}`);
+  }
+})();
