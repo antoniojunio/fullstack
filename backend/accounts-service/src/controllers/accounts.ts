@@ -62,19 +62,23 @@ async function setAccount(req: Request, res: Response, next: any) {
   }
 }
 
-function loginAccount(req: Request, res: Response, next: any) {
+async function loginAccount(req: Request, res: Response, next: any) {
   try {
     const loginParams = req.body as IAccount;
-    const index = accounts.findIndex(
-      (item) =>
-        item.email === loginParams.email &&
-        item.password === loginParams.password
-    );
-    if (index === -1) return res.status(401).end();
-
-    res.json({ auth: true, token: {} });
+    const account = await repository.findByEmail(loginParams.email);
+    if (account !== null) {
+      const isValid = auth.comparePassword(
+        loginParams.password,
+        account.password
+      );
+      if (isValid) {
+        const token = await auth.sign(account.id!);
+        return res.json({ auth: true, token });
+      }
+    }
+    return res.status(401).end();
   } catch (error) {
-    console.log(error);
+    console.log(`loginAccount: ${error}`);
     res.status(400).end();
   }
 }
