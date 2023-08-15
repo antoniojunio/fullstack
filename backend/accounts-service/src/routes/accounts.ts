@@ -1,9 +1,9 @@
 import { Router } from "express";
 import accountsController from "../controllers/accounts";
 import {
-  validateAccount,
-  validateLogin,
-  validateUpdateAccount,
+  validateAccountSchema,
+  validateLoginSchema,
+  validateUpdateAccountSchema,
   validateAuth,
 } from "./middlewares";
 
@@ -16,14 +16,18 @@ router.get("/accounts/:id", validateAuth, accountsController.getAccount);
 router.patch(
   "/accounts/:id",
   validateAuth,
-  validateUpdateAccount,
+  validateUpdateAccountSchema,
   accountsController.setAccount
 );
 
-router.post("/accounts/", validateAccount, accountsController.addAccount);
+router.post("/accounts/", validateAccountSchema, accountsController.addAccount);
 
-router.post("/accounts/login", validateLogin, accountsController.loginAccount);
+router.post(
+  "/accounts/login",
+  validateLoginSchema,
+  accountsController.loginAccount
+);
 
-router.post("/accounts/logout", validateAuth, accountsController.logoutAccount);
+router.post("/accounts/logout", accountsController.logoutAccount);
 
 export default router;

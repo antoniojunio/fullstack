@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 import { IAccount } from "../models/account";
-import repository from "../models/accountModel";
+import repository from "../models/accountRepository";
 import auth from "../auth";
-import accounts from "src/routes/accounts";
 
 async function getAccounts(req: Request, res: Response, next: any) {
   const accounts = await repository.findAll();
@@ -54,8 +53,12 @@ async function setAccount(req: Request, res: Response, next: any) {
     const accountParams = req.body as IAccount;
     accountParams.password = auth.hashPassword(accountParams.password);
     const updatedAccount = await repository.set(accountId, accountParams);
-    updatedAccount.password = "";
-    res.status(200).json(updatedAccount);
+    if (updatedAccount !== null) {
+      updatedAccount.password = "";
+      res.status(200).json(updatedAccount);
+    } else {
+      res.status(404).end();
+    }
   } catch (error) {
     console.log(`setAccount: ${error}`);
     res.status(400).end();
